@@ -1,6 +1,6 @@
 # Mini_Project
 
-~~~ java
+```java
 import java.util.Scanner;
 
 public class Matrix {
@@ -152,20 +152,17 @@ public class Matrix {
         return result;
     }
 }
-~~~
+```
+MatrixToolkit.java — Menu-Driven Driver Class
 
-    import java.util.Scanner;
+```
+import java.util.Scanner;
 
-    public class MatrixToolkit {
+public class MatrixToolkit {
 
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        System.out.println("==========================================");
-        System.out.println(" MATRIX OPERATIONS TOOLKIT (2D) ");
-        System.out.println(" Language: Java | SRIT 2025-2026 ");
-        System.out.println("==========================================");
 
         boolean running = true;
 
@@ -175,131 +172,90 @@ public class Matrix {
 
             int choice;
             try {
-                choice = Integer.parseInt(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("[!] Enter a number 1-8.");
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("Enter valid number");
                 continue;
             }
 
             try {
                 switch (choice) {
-                    case 1:
-                        doAddition();
-                        break;
-                    case 2:
-                        doSubtraction();
-                        break;
-                    case 3:
-                        doMultiplication();
-                        break;
-                    case 4:
-                        doTranspose();
-                        break;
-                    case 5:
-                        doDeterminant();
-                        break;
-                    case 6:
-                        doInverse();
-                        break;
-                    case 7:
-                        doScalarMultiply();
-                        break;
-                    case 8:
-                        System.out.println("Goodbye!");
-                        running = false;
-                        break;
-                    default:
-                        System.out.println("[!] Invalid choice.");
+                    case 1: add(); break;
+                    case 2: sub(); break;
+                    case 3: mul(); break;
+                    case 4: trans(); break;
+                    case 5: det(); break;
+                    case 6: inv(); break;
+                    case 7: scalar(); break;
+                    case 8: running = false; break;
+                    default: System.out.println("Invalid choice");
                 }
             } catch (Exception e) {
-                System.out.println("\n[ERROR] " + e.getMessage() + "\n");
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
         sc.close();
     }
+
     static void printMenu() {
-        System.out.println("\n========== MENU ==========");
-        System.out.println("1. Addition (A + B)");
-        System.out.println("2. Subtraction (A - B)");
-        System.out.println("3. Multiplication (A x B)");
-        System.out.println("4. Transpose (A^T)");
-        System.out.println("5. Determinant |A|");
-        System.out.println("6. Inverse (A^-1) [2x2 only]");
-        System.out.println("7. Scalar Multiply (k * A)");
-        System.out.println("8. Exit");
-        System.out.println("==========================");
+        System.out.println("\n1.Add  2.Sub  3.Mul  4.Transpose");
+        System.out.println("5.Det  6.Inv  7.Scalar  8.Exit");
     }
 
-    static Matrix readMatrix(String name) {
-        System.out.print("Rows for Matrix " + name + ": ");
-        int r = Integer.parseInt(sc.nextLine().trim());
+    static Matrix read(String name) {
+        System.out.print("Rows of " + name + ": ");
+        int r = Integer.parseInt(sc.nextLine());
 
-    System.out.print("Cols for Matrix " + name + ": ");
-        int c = Integer.parseInt(sc.nextLine().trim());
+        System.out.print("Cols of " + name + ": ");
+        int c = Integer.parseInt(sc.nextLine());
 
         Matrix m = new Matrix(r, c);
         m.readMatrix(sc);
-
-        System.out.print("Matrix " + name + ":");
-        m.display();
-
         return m;
     }
 
-    static void doAddition() {
-        System.out.println("\n--- Matrix Addition (A + B) ---");
-        Matrix a = readMatrix("A");
-        Matrix b = readMatrix("B");
-        System.out.println("Result (A + B):");
+    static void add() {
+        Matrix a = read("A");
+        Matrix b = read("B");
         a.add(b).display();
     }
 
-    static void doSubtraction() {
-        System.out.println("\n--- Matrix Subtraction (A - B) ---");
-        Matrix a = readMatrix("A");
-        Matrix b = readMatrix("B");
-        System.out.println("Result (A - B):");
+    static void sub() {
+        Matrix a = read("A");
+        Matrix b = read("B");
         a.subtract(b).display();
     }
 
-    static void doMultiplication() {
-        System.out.println("\n--- Matrix Multiplication (A x B) ---");
-        Matrix a = readMatrix("A");
-        Matrix b = readMatrix("B");
-        System.out.println("Result (A x B):");
+    static void mul() {
+        Matrix a = read("A");
+        Matrix b = read("B");
         a.multiply(b).display();
     }
 
-    static void doTranspose() {
-        System.out.println("\n--- Transpose ---");
-        Matrix a = readMatrix("A");
-        System.out.println("Transpose of A:");
+    static void trans() {
+        Matrix a = read("A");
         a.transpose().display();
     }
 
-    static void doDeterminant() {
-        System.out.println("\n--- Determinant |A| ---");
-        Matrix a = readMatrix("A");
-        System.out.printf("Determinant = %.4f%n", a.determinant());
+    static void det() {
+        Matrix a = read("A");
+        System.out.println("Det = " + a.determinant());
     }
 
-    static void doInverse() {
-        System.out.println("\n--- Inverse A^-1 [2x2 only] ---");
-        Matrix a = readMatrix("A");
-        System.out.println("Inverse of A:");
+    static void inv() {
+        Matrix a = read("A");
         a.inverse().display();
     }
 
-    static void doScalarMultiply() {
-        System.out.println("\n--- Scalar Multiplication ---");
-        Matrix a = readMatrix("A");
-
-        System.out.print("Enter scalar k: ");
-        double k = Double.parseDouble(sc.nextLine().trim());
-
-        System.out.println("Result (" + k + " * A):");
+    static void scalar() {
+        Matrix a = read("A");
+        System.out.print("Enter k: ");
+        double k = Double.parseDouble(sc.nextLine());
         a.scalarMultiply(k).display();
     }
+}
 
-    outputs
+```
+output :
+![output of Mini_Project](Screenshot_2026_0326_111756.png)
